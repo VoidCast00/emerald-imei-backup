@@ -1,0 +1,6 @@
+# NEVER commit raw partition images — they contain plaintext IMEI, DRM/attestation
+# keys and calibration data. Only the encrypted vault/*.gpg blobs may be committed.
+raw/
+restored/
+*.img
+*.zst
