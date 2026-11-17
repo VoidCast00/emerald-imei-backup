@@ -63,6 +63,33 @@ git commit -m "emerald nvram/imei backup 2026-11-17"
 git push            # to your PRIVATE GitHub repo
 ```
 
+## Decrypt on ANY computer (not just the one that made this)
+
+Nothing here is tied to a specific machine. The blobs are standard **gpg (AES-256)**
+over **zstd**. To recover from anywhere you need only: this repo, the two tools, and
+the passphrase.
+
+Install the tools:
+- Arch/Manjaro: `sudo pacman -S gnupg zstd`
+- Debian/Ubuntu: `sudo apt install gnupg zstd`
+- macOS: `brew install gnupg zstd`
+- Windows: Gpg4win + zstd (via scoop/choco), or just use WSL
+- On the phone itself (Termux): `pkg install gnupg zstd`
+
+Then either run `./decrypt.sh`, or do it by hand (no scripts needed) — one command
+per partition:
+
+```bash
+gpg -d nvram.img.zst.gpg | zstd -d > nvram.img
+```
+
+Repeat for each `*.img.zst.gpg`, then verify: `sha256sum -c SHA256SUMS.raw.txt`.
+
+> The passphrase is the only thing that can't be recovered. Store it in a password
+> manager that syncs off this PC (e.g. Bitwarden) so it's reachable from anywhere.
+> If the phone still boots with root, you can even clone + decrypt + flash entirely
+> from Termux with no PC at all.
+
 ## Restoring (recovery)
 
 First get verified images back:
